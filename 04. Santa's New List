@@ -1,0 +1,78 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Santa_new_List
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Dictionary<string, int> childInformation = new Dictionary<string, int>();
+            Dictionary<string, int> presents = new Dictionary<string, int>();
+            string delimeter = "->";
+            while (true)
+            {
+                
+                string input = Console.ReadLine();
+                if (input == "END") { break; }
+                if (input.Contains("Remove"))
+                {
+                    string[] tokensRemove = input.Split(new[] { delimeter }, StringSplitOptions.None).ToArray();
+                    string nameRemove = tokensRemove[1];
+                    childInformation.Remove(nameRemove);
+                    continue;
+
+                }
+
+
+                string[] tokens = input.Split(new[] { delimeter }, StringSplitOptions.None).ToArray();
+                    string name = tokens[0];
+                    string product = tokens[1];
+                    int money =int.Parse( tokens[2]);
+
+                    if (!childInformation.ContainsKey(name))
+                    {
+                        childInformation.Add(name,money);
+                        
+                                       
+                    }
+                    else
+                     {
+                    childInformation[name] += money;
+                     }
+                     if (!presents.ContainsKey(product))
+                        {
+                            presents.Add(product, money);
+
+
+                        }
+                        else
+                        {
+                            presents[product] += money;
+                        }
+
+
+
+
+
+
+
+            }
+            Console.WriteLine("Children:");
+            foreach (var child in childInformation.OrderByDescending(x=> x.Value).ThenBy(y=> y.Key))
+            {
+                string name = child.Key;
+                int presentss = child.Value;
+                Console.WriteLine($"{name} -> {presentss}");
+            }
+            Console.WriteLine("Presents:");
+            foreach (var pres in presents)
+            {
+                Console.WriteLine($"{pres.Key} -> {pres.Value}");
+            }
+        }
+    }
+}
